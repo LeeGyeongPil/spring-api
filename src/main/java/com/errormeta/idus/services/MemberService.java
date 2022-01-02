@@ -26,9 +26,9 @@ public class MemberService {
 			return false;
 		}
 	}
-	public List<Member> list() {
+	public List<Member> list(Map<String, Object> request) {
 		try {
-			List<Member> result = this.memberRepository.memberList();
+			List<Member> result = this.memberRepository.memberList(request);
 			return result;	
 		} catch (Exception e) {
 			return null;

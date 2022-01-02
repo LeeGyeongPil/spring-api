@@ -7,3 +7,8 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/idus?serverTimeZone=Asia/Seoul
     username: root
     password: idus1229!@
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+
+auth-token: YmFja3BhY2tlcjo6aWR1cw==

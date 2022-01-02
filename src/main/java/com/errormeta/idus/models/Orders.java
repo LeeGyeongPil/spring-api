@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Orders implements BaseModel {
+public class Orders {
 	public String order_no;
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public String member_idx;

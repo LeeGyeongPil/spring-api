@@ -40,21 +40,32 @@ public class MemberRepository {
 		}
 	}
 
-	public List<Member> memberList() {
+	public List<Member> memberList(Map<String, Object> request) {
+		int perPage = 10;
 		String sql = "SELECT"
-				+"		member_idx,"
-				+"		member_id,"
-				+"		member_name,"
-				+"		member_nickname,"
-				+"		member_tel,"
-				+"		member_email,"
-				+"		member_gender,"
-				+"		join_datetime,"
-				+"		last_login_datetime"
+				+"		Member.member_idx,"
+				+"		Member.member_id,"
+				+"		Member.member_name,"
+				+"		Member.member_nickname,"
+				+"		Member.member_tel,"
+				+"		Member.member_email,"
+				+"		Member.member_gender,"
+				+"		Member.join_datetime,"
+				+"		Member.last_login_datetime,"
+				+"		Orders.order_datetime AS last_order_datetime"
 				+"	FROM"
 				+"		Member"
+				+"	LEFT JOIN (SELECT member_idx, MAX(order_datetime) AS order_datetime FROM Orders GROUP BY member_idx) Orders ON Orders.member_idx = Member.member_idx"
 				+"	WHERE"
 				+"		1 = 1";
+		if (request.getOrDefault("id", null) != null) {
+			sql = sql + " AND Member.member_id LIKE '%" + request.get("id").toString() + "%'";
+		}
+		if (request.getOrDefault("email", null) != null) {
+			sql = sql + " AND Member.member_email LIKE '%" + request.get("email").toString() + "%'";
+		}
+		int offset = ((int) request.get("page") - 1) * perPage;
+		sql = sql + " LIMIT " + offset + ", " + perPage;
 		RowMapper<Member> memberMapper = (rs, rowNum) -> {
 			Member member = new Member();
 			member.setMember_idx(rs.getInt("member_idx"));
