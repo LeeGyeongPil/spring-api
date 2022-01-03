@@ -51,11 +51,9 @@ public class MemberRepository {
 				+"		Member.member_email,"
 				+"		Member.member_gender,"
 				+"		Member.join_datetime,"
-				+"		Member.last_login_datetime,"
-				+"		Orders.order_datetime AS last_order_datetime"
+				+"		Member.last_login_datetime"
 				+"	FROM"
 				+"		Member"
-				+"	LEFT JOIN (SELECT member_idx, MAX(order_datetime) AS order_datetime FROM Orders GROUP BY member_idx) Orders ON Orders.member_idx = Member.member_idx"
 				+"	WHERE"
 				+"		1 = 1";
 		if (request.getOrDefault("id", null) != null) {

@@ -19,4 +19,12 @@ public class OrderService {
 		List<Orders> result = this.orderRepository.orderList(member_idx);
 		return result;
 	}
+
+	public Orders getLastOrder(int member_idx) {
+		try {
+			return this.orderRepository.getLastOrder(member_idx);	
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

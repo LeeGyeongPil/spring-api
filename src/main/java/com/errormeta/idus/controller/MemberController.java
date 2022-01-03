@@ -21,6 +21,7 @@ import com.errormeta.idus.models.Member;
 import com.errormeta.idus.models.Orders;
 import com.errormeta.idus.services.MemberService;
 import com.errormeta.idus.services.OrderService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -150,7 +151,10 @@ public class MemberController {
 			List<Member> member = memberService.list(request);
 			List<Object> lo = new ArrayList<Object>();
 			for (Member m : member) {
-				lo.add(m);
+				ObjectMapper om = new ObjectMapper();
+				Map<String,Object> jo = om.convertValue(m, Map.class);
+				jo.put("last_order", orderService.getLastOrder(m.getMember_idx()));
+				lo.add(jo);
 			}
 			return CommonFunc.responseJson(200, "0000", "Member List Success", lo);
 		} catch (Exception e) {

@@ -40,4 +40,28 @@ public class OrdersRepository {
 		return namedParameterJdbcTemplate.query(sql, new MapSqlParameterSource(), orderMapper);
 	}
 
+	public Orders getLastOrder(int member_idx) {
+		String sql = "SELECT"
+				+"		order_no,"
+				+"		product_name,"
+				+"		order_price,"
+				+"		order_datetime,"
+				+"		pay_datetime"
+				+"	FROM"
+				+"		Orders"
+				+"	WHERE"
+				+"		member_idx = " + member_idx
+				+"	ORDER BY order_datetime DESC"
+				+"	LIMIT 1 ";
+		RowMapper<Orders> orderMapper = (rs, rowNum) -> {
+			Orders orders = new Orders();
+			orders.setOrder_no(rs.getString("order_no"));
+			orders.setProduct_name(rs.getString("product_name"));
+			orders.setOrder_price(rs.getInt("order_price"));
+			orders.setOrder_datetime(rs.getDate("order_datetime"));
+			orders.setPay_datetime(rs.getDate("pay_datetime"));
+			return orders;
+		};
+		return namedParameterJdbcTemplate.queryForObject(sql, new MapSqlParameterSource(), orderMapper);
+	}
 }
