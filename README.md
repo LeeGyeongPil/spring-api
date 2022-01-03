@@ -8,7 +8,7 @@
 
 ## src/main/resources/application.yml 파일 수정
 ```
-url: jdbc:mysql://{DB host 정보}:{DB 포트}
+url: jdbc:mysql://{DB host 정보}:{DB 포트}/idus?serverTimeZone=Asia/Seoul
 DB 정보에 맞추어 해당 파일 수정
 ```
 
