@@ -15,6 +15,7 @@ import com.errormeta.idus.config.CommonFunc;
 import com.errormeta.idus.middleware.ApiMiddleware;
 import com.errormeta.idus.models.Member;
 import com.errormeta.idus.services.MemberService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -49,8 +50,12 @@ public class LoginController {
 		
 			Object member = memberService.login(request);
 			Member m = (Member) member;
-			memberService.tokenRefresh(m.getMember_id(), m.getMember_idx());
-			return CommonFunc.responseJson(200, "0000", "Member Login Success", member);
+			String login_token = memberService.tokenRefresh(m.getMember_id(), m.getMember_idx());
+			ObjectMapper om = new ObjectMapper();
+			Map<String,Object> jo = om.convertValue(m, Map.class);
+			
+			jo.put("login_token", login_token); 
+			return CommonFunc.responseJson(200, "0000", "Member Login Success", jo);
 		} catch (Exception e) {
 			return CommonFunc.responseJson(500, "9999", "Internal Server Error :: " + e.getMessage());
 		}
